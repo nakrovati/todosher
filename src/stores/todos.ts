@@ -18,15 +18,23 @@ export const useTodosStore = defineStore("todos", {
     },
     /** Return finished todos */
     finishedTodos: (state) => {
-      if (!state.todos) return undefined;
+      if (!state.todos) return [];
 
       return state.todos.filter((todo: ITodo) => todo.isFinished);
     },
     /** Return unfinished todos */
     unfinishedTodos: (state) => {
-      if (!state.todos) return undefined;
+      if (!state.todos) return [];
 
       return state.todos.filter((todo: ITodo) => !todo.isFinished);
+    },
+    filteredTodos(): ITodo[] | undefined {
+      if (this.filter === "finished") {
+        return this.finishedTodos;
+      } else if (this.filter === "unfinished") {
+        return this.unfinishedTodos;
+      }
+      return this.todos;
     },
   },
   actions: {
