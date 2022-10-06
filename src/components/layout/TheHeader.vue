@@ -4,13 +4,10 @@
     <router-link class="header__title" to="/todosher/history/"
       >History</router-link
     >
-    <TodoSearch></TodoSearch>
   </header>
 </template>
 
-<script setup lang="ts">
-import TodoSearch from "Components/TodoSearch/TodoSearch.vue";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .header {
