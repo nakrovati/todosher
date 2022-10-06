@@ -7,11 +7,12 @@
   --grey: #faf9f8;
   --bg: #faf9f8;
   --todo-list-item-bg: var(--white);
+  --create-todo-helpers-bg: var(--white);
 }
 
 :root.dark {
   --bg: #202020;
   --text: var(--white);
-
+  --create-todo-helpers-bg: #2e2e2e;
   --todo-list-item-bg: #2e2e2e;
 }

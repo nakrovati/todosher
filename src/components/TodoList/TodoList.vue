@@ -1,7 +1,7 @@
 <template>
   <div class="todo-list">
     <TodoListItem
-      v-for="(todo, index) in todos"
+      v-for="todo in todos"
       :key="todo.id"
       :id="todo.id"
       :text="todo.text"

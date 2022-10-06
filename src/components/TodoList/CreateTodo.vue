@@ -10,11 +10,8 @@
       />
       <img class="todo-create__icon" :src="IconPlus" alt="Icon plus" />
     </div>
-
     <div v-if="helpersShown" class="todo-create__helpers">
-      <button @click="addTodo" type="button" class="helpers__btn-add-todo">
-        Add
-      </button>
+      <BaseButton @click="addTodo" type="button"> Add </BaseButton>
     </div>
   </div>
 </template>
@@ -22,9 +19,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import IconPlus from "Assets/icons/plus-solid.svg";
+import BaseButton from "Components/common/BaseButton.vue";
 import { useTodosStore } from "Stores/todos";
-import type { ITodo } from "Types/types";
 import createRandomId from "Utils/createRandomId";
+import type { ITodo } from "Types/types";
 
 class Todo implements ITodo {
   id: number;
@@ -61,8 +59,12 @@ const inputBorderRadius = computed(() => {
   return helpersShown.value ? "5px 5px 0 0" : "5px";
 });
 
-watch(todoText, () => {
-  if (todoText.value.length) helpersShown.value = true;
+const todoTextEntered = computed(() => {
+  return helpersShown.value || !!todoText.value.length;
+});
+
+watch(todoTextEntered, () => {
+  helpersShown.value = true;
 });
 </script>
 
@@ -70,6 +72,7 @@ watch(todoText, () => {
 .todo-create {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin-bottom: 1em;
+  border-radius: 5px;
 
   .dark & {
     box-shadow: none;
@@ -110,11 +113,11 @@ watch(todoText, () => {
     align-items: center;
     padding: calc(0.5em - 1px) 1em 0.5em;
     border-top: 1px solid #e1dfdd;
-    border-radius: 0 0 5px 5px;
+    border-radius: 5px;
 
     .dark & {
       border: none;
-      background-color: #2e2e2e;
+      background-color: var(--create-todo-helpers-bg);
     }
 
     .helpers__btn-add-todo {
