@@ -1,7 +1,6 @@
 export interface ITodo {
   id: number;
-  title: string;
-  dateCreated: Date;
+  text: string;
   isFinished: boolean;
-  note?: string;
+  dateCreated: Date;
 }

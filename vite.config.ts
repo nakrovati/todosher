@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "node:path";
 
 export default defineConfig({
-  base: "/todo-app/",
+  base: "/todosher/",
   build: {
     rollupOptions: {
       output: {
@@ -15,6 +15,15 @@ export default defineConfig({
             return "vendor.packages";
           }
         },
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @use "Styles/colors";
+          `,
       },
     },
   },

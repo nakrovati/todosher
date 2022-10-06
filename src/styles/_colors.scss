@@ -1,0 +1,17 @@
+:root {
+  --primary: #885a5a;
+  --primary-lighter: #e3d4d4;
+  --white: #ffffff;
+  --black: #1a1a1a;
+  --text: var(--black);
+  --grey: #faf9f8;
+  --bg: #faf9f8;
+  --todo-list-item-bg: var(--white);
+}
+
+:root.dark {
+  --bg: #202020;
+  --text: var(--white);
+
+  --todo-list-item-bg: #2e2e2e;
+}

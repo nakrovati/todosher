@@ -6,20 +6,20 @@ import type { ITodo } from "Types/types";
 
 class Todo implements ITodo {
   id: number;
-  title: string;
-  dateCreated: Date;
+  text: string;
   isFinished: boolean;
+  dateCreated: Date;
 
   constructor(
     id: number,
-    title: string,
-    dateCreated: Date,
-    isFinished: boolean
+    text: string,
+    isFinished: boolean,
+    dateCreated: Date
   ) {
     this.id = id;
-    this.title = title;
-    this.dateCreated = dateCreated;
+    this.text = text;
     this.isFinished = isFinished;
+    this.dateCreated = dateCreated;
   }
 }
 
@@ -33,8 +33,8 @@ describe("Todos store", () => {
     const todosStore = useTodosStore();
     expect(todosStore.todoById).toBeUndefined;
 
-    const todo1 = new Todo(createRandomId(), "First todo", new Date(), false);
-    const todo2 = new Todo(createRandomId(), "Second todo", new Date(), true);
+    const todo1 = new Todo(createRandomId(), "First todo", false, new Date());
+    const todo2 = new Todo(createRandomId(), "Second todo", true, new Date());
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
@@ -46,8 +46,8 @@ describe("Todos store", () => {
     const todosStore = useTodosStore();
     expect(todosStore.finishedTodos).toBeUndefined;
 
-    const todo1 = new Todo(createRandomId(), "First todo", new Date(), false);
-    const todo2 = new Todo(createRandomId(), "Second todo", new Date(), true);
+    const todo1 = new Todo(createRandomId(), "First todo", false, new Date());
+    const todo2 = new Todo(createRandomId(), "Second todo", true, new Date());
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
@@ -59,8 +59,8 @@ describe("Todos store", () => {
     const todosStore = useTodosStore();
     expect(todosStore.unfinishedTodos).toBeUndefined;
 
-    const todo1 = new Todo(createRandomId(), "First todo", new Date(), false);
-    const todo2 = new Todo(createRandomId(), "Second todo", new Date(), true);
+    const todo1 = new Todo(createRandomId(), "First todo", false, new Date());
+    const todo2 = new Todo(createRandomId(), "Second todo", true, new Date());
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
@@ -68,31 +68,61 @@ describe("Todos store", () => {
     expect(todosStore.unfinishedTodos).toStrictEqual([todo1]);
   });
 
+  test.skip("getting filtered todos", () => {
+    const todosStore = useTodosStore();
+    expect(todosStore.unfinishedTodos).toBeUndefined;
+
+    const todo1 = new Todo(createRandomId(), "First todo", false, new Date());
+    const todo2 = new Todo(createRandomId(), "Second todo", true, new Date());
+
+    todosStore.addTodo(todo1);
+    todosStore.addTodo(todo2);
+
+    expect(todosStore.filteredTodos).toStrictEqual([todo1]);
+  });
+
   // Actions
   it("adds a new todo", () => {
     const todosStore = useTodosStore();
     expect(todosStore.todos).toStrictEqual([]);
 
-    const todo1 = new Todo(createRandomId(), "First todo", new Date(), false);
-    const todo2 = new Todo(createRandomId(), "Second todo", new Date(), true);
+    const todo1 = new Todo(123_456_789, "First todo", false, new Date());
+    const todo2 = new Todo(987_654_321, "Second todo", true, new Date());
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
 
-    expect(todosStore.todos).toStrictEqual([todo1, todo2]);
+    expect(todosStore.todos).toStrictEqual([todo2, todo1]);
+  });
+
+  it("completes the todo", () => {
+    const todosStore = useTodosStore();
+    expect(todosStore.todos).toStrictEqual([]);
+
+    const todo1 = new Todo(123_456_789, "First todo", false, new Date());
+
+    todosStore.addTodo(todo1);
+
+    expect(todosStore.unfinishedTodos).toStrictEqual([todo1]);
+    expect(todosStore.finishedTodos).toStrictEqual([]);
+
+    todosStore.completeTodo(123_456_789);
+
+    expect(todosStore.unfinishedTodos).toStrictEqual([]);
+    expect(todosStore.finishedTodos).toStrictEqual([todo1]);
   });
 
   it("delete a todo", () => {
     const todosStore = useTodosStore();
     expect(todosStore.todos).toStrictEqual([]);
 
-    const todo1 = new Todo(123_456_789, "First todo", new Date(), false);
-    const todo2 = new Todo(987_654_321, "Second todo", new Date(), true);
+    const todo1 = new Todo(123_456_789, "First todo", false, new Date());
+    const todo2 = new Todo(987_654_321, "Second todo", true, new Date());
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
 
-    expect(todosStore.todos).toStrictEqual([todo1, todo2]);
+    expect(todosStore.todos).toStrictEqual([todo2, todo1]);
 
     todosStore.deleteTodo(todo1.id);
 
@@ -103,7 +133,7 @@ describe("Todos store", () => {
     const todosStore = useTodosStore();
     expect(todosStore.todos).toStrictEqual([]);
 
-    const todo1 = new Todo(createRandomId(), "First todo", new Date(), true);
+    const todo1 = new Todo(createRandomId(), "First todo", true, new Date());
 
     todosStore.addTodo(todo1);
 

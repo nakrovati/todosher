@@ -4,25 +4,20 @@ import Home from "Views/Home.vue";
 const routes = [
   {
     path: "/",
+    redirect: { name: "Home" },
+  },
+  {
+    path: "/todosher/",
     name: "Home",
     component: Home,
   },
   {
-    path: "/notes",
-    redirect: { name: "Home" },
+    path: "/todosher/history",
+    name: "History",
+    component: () => import("Views/History.vue"),
   },
   {
-    path: "/notes/create",
-    name: "NoteCreate",
-    component: () => import("Views/Note.vue"),
-  },
-  {
-    path: "/notes/:id",
-    name: "Note",
-    component: () => import("Views/Note.vue"),
-  },
-  {
-    path: "/:pathMatch(.*)*",
+    path: "/todosher/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("Views/NotFound.vue"),
   },

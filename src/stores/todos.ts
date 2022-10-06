@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
+import createRandomId from "Utils/createRandomId";
 import type { ITodo } from "Types/types";
 
 export const useTodosStore = defineStore("todos", {
@@ -39,7 +40,20 @@ export const useTodosStore = defineStore("todos", {
   },
   actions: {
     addTodo(todo: ITodo) {
-      this.todos.push(todo);
+      while (this.todoById(todo.id)) {
+        todo.id = createRandomId();
+      }
+
+      this.todos.unshift(todo);
+    },
+    completeTodo(id: number) {
+      if (!this.todos) return undefined;
+
+      const todo = this.todos.find((todo: ITodo) => todo.id === id);
+
+      if (!todo) return undefined;
+
+      todo.isFinished = true;
     },
     deleteTodo(id: number) {
       if (!this.todos) return undefined;
