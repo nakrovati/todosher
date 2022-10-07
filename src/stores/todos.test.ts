@@ -68,7 +68,7 @@ describe("Todos store", () => {
     expect(todosStore.unfinishedTodos).toStrictEqual([todo1]);
   });
 
-  test.skip("getting filtered todos", () => {
+  test("getting filtered todos", () => {
     const todosStore = useTodosStore();
     expect(todosStore.unfinishedTodos).toBeUndefined;
 
@@ -77,6 +77,14 @@ describe("Todos store", () => {
 
     todosStore.addTodo(todo1);
     todosStore.addTodo(todo2);
+
+    expect(todosStore.filteredTodos).toStrictEqual([todo2, todo1]);
+
+    todosStore.$patch({ filter: "finished" });
+
+    expect(todosStore.filteredTodos).toStrictEqual([todo2]);
+
+    todosStore.$patch({ filter: "unfinished" });
 
     expect(todosStore.filteredTodos).toStrictEqual([todo1]);
   });
